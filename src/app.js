@@ -8,6 +8,7 @@ const reviewsRouter = require("./reviews/reviews.router");
 const errorHandler = require("./errors/errorHandler");
 const notFound = require("./errors/notFound");
 
+app.use(express.json());
 app.use("/movies", moviesRouter);
 app.use("/theaters", theatersRouter);
 app.use("/reviews", reviewsRouter);
