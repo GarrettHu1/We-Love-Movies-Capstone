@@ -1,15 +1,18 @@
 const knex = require("../db/connection");
 
 function list() {
-    return knex("movies")
+    return knex("movies as m")
     .select("*")
 }
 
 function listIsShowing() {
-    return knex("movies as m")
-    .join("movies_theaters as mt", "m.movie_id", "mt.movie_id")
-    .select("*")
-    .where({ isShowing: true })
+    // return knex("movies as m")
+    return knex("movies_theaters as mt")
+    // .join("movies_theaters as mt", "m.movie_id", "mt.movie_id")
+    .join("movies as m", "mt.movie_id", "m.movie_id")
+    .distinct("m.movie_id", "m.title", "m.runtime_in_minutes", "m.rating", "m.description", "m.image_url")
+    // .select("*")
+    .where({ is_showing: true })
 }
 
 function read(movieId) {

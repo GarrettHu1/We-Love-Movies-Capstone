@@ -4,10 +4,7 @@ const methodNotAllowed = require("../errors/methodNotAllowed");
 
 router.route("/").get(controller.list).all(methodNotAllowed);
 
-router
-  .route("/:movieId")
-  .get(controller.read)
-  .all(methodNotAllowed);
+router.route("/:movieId").get(controller.read);
 
 router
   .route("/theaters")
@@ -18,3 +15,5 @@ router
   .route("/reviews")
   .get(controller.read)
   .all(methodNotAllowed);
+
+  module.exports = router;
