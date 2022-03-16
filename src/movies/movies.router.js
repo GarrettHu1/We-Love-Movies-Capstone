@@ -6,11 +6,9 @@ router.route("/").get(controller.list).all(methodNotAllowed);
 
 router.route("/:movieId").get(controller.read).all(methodNotAllowed);
 
-router.route("/theaters").get(controller.read).all(methodNotAllowed);
+router.route("/theaters").get(controller.readMovieTheater).all(methodNotAllowed);
 
-  router
-  .route("/reviews")
-  .get(controller.read)
-  .all(methodNotAllowed);
+
+
 
   module.exports = router;

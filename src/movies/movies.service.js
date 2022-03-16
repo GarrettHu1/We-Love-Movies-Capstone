@@ -23,11 +23,12 @@ function read(movieId) {
 }
 
 function readMovieTheater(movieId) {
-    return knex("movies_theaters as mt")
-    .join("movies as m", "m.movie_id", "mt.movie_id")
+    return knex("movies as m")
+    .join("movies_theaters as mt", "m.movie_id", "mt.movie_id")
     .join("theaters as t", "mt.theater_id", "t.theater_id")
     //.select("theater_id", "name", "address_line_1", "address_line_2", "city", "state", "zip", "created_at", "created_at", "is_showing", "movie_id")
-    .select("theaters*", "mt.is_showing", "mt.movie_id")
+    .select("m.movie_id")
+    .select("*")
     .where({ movie_id: movieId })
 }
 

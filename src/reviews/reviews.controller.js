@@ -1,6 +1,6 @@
 const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-const res = require("express/lib/response");
+// const res = require("express/lib/response");
 
 async function list() {
     const data = await service.list();
@@ -27,11 +27,19 @@ async function update(req, res, next) {
         review_id: res.locals.review.review_id,
     }
     const data = await service.update(updatedReview)
-    
+
     res.json({ data: data })
-}
+};
+
+function destroy(req, res, next) {
+    service
+      .delete(res.locals.review.review_id)
+      .then(() => res.sendStatus(204))
+      .catch(next);
+  }
 
 module.exports = {
     list,
     update: [ asyncErrorBoundary(reviewExists), update ],
+    delete: [ asyncErrorBoundary(reviewExists), destroy ]
 }

@@ -29,7 +29,7 @@ async function movieIdExists(req, res, next) {
     if (foundId) {
       return next();
     } else {
-      console.log(`Couldnt find movie with id: ${movieId}`)
+      // console.log(`Couldnt find movie with id: ${movieId}`)
       return next({ status: 404, message: `Movie cannot be found.` });
     }
 };
@@ -60,7 +60,7 @@ async function movieTheaterExists(req, res, next) {
   }
 
 async function readMovieTheater(req, res, next) {
-    const knexInstance = req.app.get("db");
+    
     const { movie } = res.locals;
     res.json({ data: movie })
 }
