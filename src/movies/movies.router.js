@@ -10,5 +10,7 @@ router.route("/:movieId/theaters").get(controller.readMovieTheaters).all(methodN
 
 router.route("/:movieId/reviews").get(controller.readMovieReviews).all(methodNotAllowed);
 
+router.route("/:movieId/critics").get(controller.readMovieCritics).all(methodNotAllowed);
+
 
 module.exports = router;

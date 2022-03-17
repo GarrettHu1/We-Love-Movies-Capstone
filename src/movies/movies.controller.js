@@ -2,6 +2,14 @@ const service = require("./movies.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const { test } = require("../../knexfile");
 
+const mapProperties = require("../utils/map-properties");
+const addCritics = mapProperties({
+  surname: "critic.surname",
+  organization_name: "critic.organization_name",
+  preferred_name: "critic.preferred_name"
+})
+
+
 async function list(req, res, next) {
   // if req.query exists, run service.listIsShowing is showing, else run service.list
     res.json({ data: res.locals.movies });
@@ -59,13 +67,20 @@ const { movieId } = req.params;
 async function readMovieReviews(req, res, next) {
   const { movieId } = req.params;
       const data = await service.readMovieReviews(movieId);
-      console.log(data);
-      res.json({ data: data })
+      const newDSata = data.map((review) => addCritics(review))
+      console.log(newDSata);
+
+      res.json({ data: newDSata })
+  }
+
+  async function readMovieCritics(req, res, next) {
+    return next({ status: 404 })
   }
 
 module.exports = {
     list: [ asyncErrorBoundary(listIsShowing), list ],
-    read: [ movieIdExists, asyncErrorBoundary(movieExists), read ],
+    read: [ asyncErrorBoundary(movieIdExists), asyncErrorBoundary(movieExists), read ],
     readMovieTheaters,
-    readMovieReviews
+    readMovieReviews,
+    readMovieCritics
 }

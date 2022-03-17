@@ -1,10 +1,17 @@
 const knex = require("../db/connection");
 const mapProperties = require("../utils/map-properties");
+const reduceProperties = require("../utils/reduce-properties");
 
 const addCritics = mapProperties({
     surname: "critic.surname",
     organization_name: "critic.organization_name",
     preferred_name: "critic.preferred_name"
+})
+
+const reduceCritics = reduceProperties("review_id", {
+    surname: ["critics", null, "critic_id"],
+    organization_name: ["critics", null, "critic.organization_name"],
+    preferred_name: ["critics", null, "critic.preferred_name"]
 })
 
 function list() {
@@ -40,15 +47,21 @@ function readMovieTheaters(movieId) {
     .where({ "m.movie_id": movieId })
 }
 
-function readMovieReviews(movieId) {
+async function readMovieReviews(movieId) {
     //select all review properties, reduce critics
 
-    return knex("movies as m")
+    const reviews = await knex("movies as m")
     .join("reviews as r", "m.movie_id", "r.movie_id")
     .join("critics as c", "r.critic_id", "c.critic_id")
-    .select("*")
+    .select("r.*", "c.*")
     .where({ "m.movie_id": movieId })
-    .then((response) => addCritics(response))
+    //.then((newRow) => newRow[0])
+    //.then((response) => addCritics(response))
+
+    // loop through array of review/critics objects, for each object, run mapProperties to seperate critics into own key value pair
+
+    return reviews;
+
 }
 
 module.exports = {
